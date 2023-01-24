@@ -89,7 +89,7 @@ public class TestControllerIT
     {
         try (final var stopExec = app.getDockerClient().stopContainerCmd(app.getContainerId()))
         {
-            stopExec.exec();
+            stopExec.withTimeout(30).exec();
         }
 
         network.close();

@@ -132,6 +132,32 @@
                                 </outputDirectory>
                             </configuration>
                         </execution>
+                        <execution>
+                            <id>report</id>
+                            <goals>
+                                <goal>report-aggregate</goal>
+                            </goals>
+                            <phase>verify</phase>
+                        </execution>
+
+                        <execution>
+                            <id>merge-unit-and-integration</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>merge</goal>
+                            </goals>
+                            <configuration>
+                                <fileSets>
+                                    <fileSet>
+                                        <directory>${project.build.directory}/jacoco-output/</directory>
+                                        <includes>
+                                            <include>*.exec</include>
+                                        </includes>
+                                    </fileSet>
+                                </fileSets>
+                                <destFile>${project.build.directory}/jacoco-output/merged.exec</destFile>
+                            </configuration>
+                        </execution>
                     </executions>
                 </plugin>
 
