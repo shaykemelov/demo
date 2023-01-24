@@ -12,8 +12,6 @@ COPY --from=build /app/lib /app/lib
 COPY --from=build /app/META-INF /app/META-INF
 COPY --from=build /app/classes /app
 
-RUN mkdir -p /jacoco-report ; chown -R app:app /jacoco-report ; chmod -R +rw /jacoco-report
-
 RUN useradd -u 3000 app
 USER app
 WORKDIR /

@@ -86,34 +86,31 @@
             </plugin>
 
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>before-integration-test-execution</id>
-                        <phase>pre-integration-test</phase>
+                        <id>copy-classes-to-test-module</id>
                         <goals>
-                            <goal>prepare-agent</goal>
+                            <goal>testResources</goal>
                         </goals>
                         <configuration>
-                            <destFile>${project.build.directory}/jacoco-report/jacoco-it.exec</destFile>
-                            <propertyName>failsafe.jacoco.args</propertyName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>after-integration-test-execution</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <configuration>
-                            <dataFile>${project.build.directory}/jacoco-report/jacoco-it.exec</dataFile>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/../app/target/classes</directory>
+                                </resource>
+                            </resources>
                             <outputDirectory>
-                                ${project.reporting.outputDirectory}/jacoco-it-coverage-report
+                                ${project.build.outputDirectory}
                             </outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
 
             <plugin>

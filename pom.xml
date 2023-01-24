@@ -18,6 +18,7 @@
     <modules>
         <module>app</module>
         <module>integration-tests</module>
+      <module>jacoco-report</module>
     </modules>
 
     <properties>
@@ -53,6 +54,18 @@
                 <classifier>runtime</classifier>
                 <scope>test</scope>
             </dependency>
+
+            <dependency>
+                <groupId>kz.shaykemelov</groupId>
+                <artifactId>app</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>kz.shaykemelov</groupId>
+                <artifactId>integration-tests</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -72,6 +85,54 @@
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco.version}</version>
+                    <executions>
+                        <execution>
+                            <id>before-unit-test-execution</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.build.directory}/jacoco-report/jacoco-unit-tests.exec</destFile>
+                                <propertyName>surefire.jacoco.args</propertyName>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>after-unit-test-execution</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/jacoco-report/jacoco-unit-tests.exec</dataFile>
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-unit-test-coverage-report
+                                </outputDirectory>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>before-integration-test-execution</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.build.directory}/jacoco-report/jacoco-it.exec</destFile>
+                                <propertyName>failsafe.jacoco.args</propertyName>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>after-integration-test-execution</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/jacoco-report/jacoco-it.exec</dataFile>
+                                <outputDirectory>
+                                    ${project.reporting.outputDirectory}/jacoco-it-coverage-report
+                                </outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <plugin>
@@ -80,7 +141,7 @@
                     <configuration>
                         <argLine>${surefire.jacoco.args}</argLine>
                         <excludes>
-                            <exclude>**/*IntegrationTest.java</exclude>
+                            <exclude>**/*IT.java</exclude>
                         </excludes>
                     </configuration>
                 </plugin>

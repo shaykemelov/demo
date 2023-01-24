@@ -73,10 +73,9 @@ public class TestControllerIT
                 .withNetworkAliases("app")
                 .withExposedPorts(8080)
                 .withFileSystemBind("./target/jacoco-agent", "/jacoco-agent", BindMode.READ_WRITE)
-                .withFileSystemBind("./target/jacoco-report", "/jacoco-report", BindMode.READ_WRITE)
+                .withFileSystemBind("../jacoco-report/target/jacoco-report", "/jacoco-report", BindMode.READ_WRITE)
                 .withEnv("JAVA_OPTS", "-javaagent:/jacoco-agent/org.jacoco.agent-runtime.jar=destfile=/jacoco-report/jacoco-it.exec,append=true")
                 .withEnv("TEST_BASE_URL", "http://mockServer:1080")
-                .withCommand("ls -lha")
                 .withLogConsumer(new Slf4jLogConsumer(LOGGER));
 
         app.start();
