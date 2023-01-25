@@ -31,15 +31,68 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
-            <id>report</id>
+            <id>copy-classes-to-test-module</id>
             <goals>
-              <goal>report-aggregate</goal>
+              <goal>resources</goal>
             </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../app/target/jacoco-report/</directory>
+                </resource>
+                <resource>
+                  <directory>${project.basedir}/../integration-tests/target/jacoco-report/
+                  </directory>
+                </resource>
+                <resource>
+                  <directory>${project.basedir}/../app/target/classes</directory>
+                </resource>
+              </resources>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <configuration>
+          <fileSets>
+            <fileSet>
+              <directory>${project.build.directory}/classes</directory>
+              <includes>
+                <include>*.exec</include>
+              </includes>
+            </fileSet>
+          </fileSets>
+          <destFile>${project.build.directory}/jacoco-output/merged.exec</destFile>
+        </configuration>
+        <executions>
+          <execution>
+            <id>merge-unit-and-integration</id>
             <phase>verify</phase>
+            <goals>
+              <goal>merge</goal>
+            </goals>
+          </execution>
+
+          <execution>
+            <id>create-merged-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-output/merged.exec</dataFile>
+              <outputDirectory>
+                ${project.reporting.outputDirectory}/jacoco-merged-test-coverage-report
+              </outputDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>
