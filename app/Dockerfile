@@ -16,4 +16,4 @@ RUN useradd -u 3000 app
 USER app
 WORKDIR /
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -cp app:app/lib/* kz.shaykemelov.demo.DemoApplication"]
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -cp app:app/lib/* kz.shaykemelov.demo.DemoApplication"]

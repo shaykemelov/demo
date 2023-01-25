@@ -132,13 +132,6 @@
                                 </outputDirectory>
                             </configuration>
                         </execution>
-                        <execution>
-                            <id>report</id>
-                            <goals>
-                                <goal>report-aggregate</goal>
-                            </goals>
-                            <phase>verify</phase>
-                        </execution>
 
                         <execution>
                             <id>merge-unit-and-integration</id>
